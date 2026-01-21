@@ -1,0 +1,2602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据分析平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #4361ee;
+            padding: 20px 0;
+        }
+        
+        .logo i {
+            font-size: 28px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 20px 25px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            background: #f0f4ff;
+            color: #4361ee;
+        }
+        
+        .nav-link.active {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 4px;
+            background: #4361ee;
+            border-radius: 2px;
+        }
+        
+        /* 主要内容区样式 */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-size: 36px;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 计算器容器样式 */
+        .calculator-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .calculator-container.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .calculator-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .calculator-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .calculator-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f4ff;
+        }
+        
+        .calculator-header h2 {
+            font-size: 28px;
+            color: #333;
+            margin-left: 15px;
+        }
+        
+        .calculator-header i {
+            font-size: 32px;
+            color: #4361ee;
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 12px;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        footer p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .nav-container {
+                flex-direction: column;
+                padding: 0;
+            }
+            
+            .nav-menu {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                padding: 0 10px 15px;
+            }
+            
+            .nav-link {
+                padding: 15px 20px;
+            }
+            
+            .calculator-card {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 28px;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+            }
+            
+            .nav-item {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .nav-link {
+                border-radius: 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            
+            .calculator-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .calculator-header h2 {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+        }
+        
+        /* 通用说明样式 */
+        .instructions {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            border-left: 4px solid #4361ee;
+        }
+        
+        .instructions h4 {
+            color: #4361ee;
+            margin-bottom: 10px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions h4 i {
+            margin-right: 8px;
+        }
+        
+        .instructions p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+        
+        /* ==================== 第一个计算器：曝光量计算器 ==================== */
+        #calculator1 .input-group {
+            margin-bottom: 25px;
+        }
+        
+        #calculator1 label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        
+        #calculator1 .input-with-unit {
+            position: relative;
+        }
+        
+        #calculator1 input {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        #calculator1 input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+        
+        #calculator1 .unit {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-weight: 600;
+            background: white;
+            padding: 0 8px;
+        }
+        
+        #calculator1 .button-group {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        #calculator1 button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #calculator1 .calculate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        #calculator1 .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        #calculator1 .reset-btn {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+        
+        #calculator1 .reset-btn:hover {
+            background: #f1f3f5;
+        }
+        
+        #calculator1 .result {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        #calculator1 .result.show {
+            display: block;
+        }
+        
+        #calculator1 .result-value {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        #calculator1 .result-detail {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        /* ==================== 第二个计算器：订单量预估计算器 ==================== */
+        #calculator2 .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        #calculator2 .input-group {
+            margin-bottom: 20px;
+        }
+        
+        #calculator2 .input-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        #calculator2 .input-group label i {
+            margin-right: 8px;
+            color: #2a5298;
+        }
+        
+        #calculator2 .current-time {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 12px;
+            border-left: 5px solid #2a5298;
+        }
+        
+        #calculator2 .current-time h3 {
+            color: #2a5298;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        #calculator2 #currentTime {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ff7e5f;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        #calculator2 input, #calculator2 select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9ff;
+        }
+        
+        #calculator2 input:focus, #calculator2 select:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+            background: white;
+        }
+        
+        #calculator2 .button-group {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        #calculator2 button {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #calculator2 button i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        #calculator2 .calculate-btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+        
+        #calculator2 .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(30, 60, 114, 0.3);
+        }
+        
+        #calculator2 .reset-btn {
+            background: #f8f9ff;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+        
+        #calculator2 .reset-btn:hover {
+            background: #f1f3f5;
+        }
+        
+        #calculator2 .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        #calculator2 .result-box {
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        #calculator2 .result-box:nth-child(1) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        #calculator2 .result-box:nth-child(2) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        #calculator2 .result-box:nth-child(3) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        #calculator2 .result-box:nth-child(4) {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        
+        #calculator2 .result-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+        
+        #calculator2 .result-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        #calculator2 .result-detail {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        #calculator2 .time-remaining {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 25px;
+            text-align: center;
+            border-left: 5px solid #ff7e5f;
+        }
+        
+        /* ==================== 第三个计算器：营销盈利计算器 ==================== */
+        #calculator3 .formula-display {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid #4361ee;
+        }
+        
+        #calculator3 .formula-display h3 {
+            color: #4361ee;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #calculator3 .formulas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        #calculator3 .formula-box {
+            flex: 1;
+            min-width: 250px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        
+        #calculator3 .formula-box h4 {
+            color: #3a0ca3;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        #calculator3 .formula {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+            background-color: #f0f7ff;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        
+        #calculator3 .formula-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        #calculator3 .input-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        #calculator3 .input-box {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        #calculator3 .input-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        #calculator3 .input-box h3 {
+            color: #3a0ca3;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+        
+        #calculator3 .input-box i {
+            color: #4361ee;
+        }
+        
+        #calculator3 .input-field {
+            margin-bottom: 20px;
+        }
+        
+        #calculator3 .input-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        #calculator3 .input-wrapper {
+            position: relative;
+        }
+        
+        #calculator3 .input-wrapper input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        #calculator3 .input-wrapper input:focus {
+            border-color: #4361ee;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        #calculator3 .unit {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        #calculator3 .calc-hint {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        #calculator3 .results-section {
+            background-color: #f0f7ff;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-top: 5px solid #4cc9f0;
+        }
+        
+        #calculator3 .results-section h3 {
+            color: #4361ee;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #calculator3 .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        #calculator3 .result-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        #calculator3 .result-label {
+            font-size: 0.95rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        
+        #calculator3 .result-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #3a0ca3;
+        }
+        
+        #calculator3 .profit-analysis {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        #calculator3 .profit-analysis h3 {
+            color: #7209b3;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #calculator3 .profit-message {
+            font-size: 1.1rem;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        #calculator3 .profit-positive {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        
+        #calculator3 .profit-negative {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        
+        #calculator3 .profit-neutral {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 5px solid #ffc107;
+        }
+        
+        #calculator3 .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        #calculator3 .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        #calculator3 .btn-primary {
+            background-color: #4361ee;
+            color: white;
+        }
+        
+        #calculator3 .btn-primary:hover {
+            background-color: #3a0ca3;
+            transform: translateY(-2px);
+        }
+        
+        #calculator3 .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        #calculator3 .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        /* ==================== 第四个计算器：上游激活价值计算器 ==================== */
+        #calculator4 .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        #calculator4 .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        #calculator4 .btn-primary {
+            background-color: #4361ee;
+            color: white;
+        }
+        
+        #calculator4 .btn-primary:hover {
+            background-color: #3a0ca3;
+            transform: translateY(-2px);
+        }
+        
+        #calculator4 .btn-success {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        #calculator4 .btn-success:hover {
+            background-color: #0da271;
+            transform: translateY(-2px);
+        }
+        
+        #calculator4 .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        #calculator4 .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        #calculator4 .table-container {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+        
+        #calculator4 table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        #calculator4 th {
+            background-color: #f1f5f9;
+            padding: 16px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            white-space: nowrap;
+        }
+        
+        #calculator4 td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        #calculator4 tr:hover {
+            background-color: #f9fafb;
+        }
+        
+        #calculator4 input[type="text"], #calculator4 input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        
+        #calculator4 input[type="text"]:focus, #calculator4 input[type="number"]:focus {
+            outline: none;
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        #calculator4 .calc-cell {
+            font-weight: 600;
+            color: #1f2937;
+            background-color: #f8fafc;
+        }
+        
+        #calculator4 .delete-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 18px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        #calculator4 .delete-btn:hover {
+            background-color: #fee2e2;
+        }
+        
+        #calculator4 .summary {
+            background-color: #f1f5f9;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        #calculator4 .summary h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #calculator4 .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        #calculator4 .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        #calculator4 .stat-card h3 {
+            font-size: 15px;
+            color: #6b7280;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        #calculator4 .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        #calculator4 .stat-value.highlight {
+            color: #10b981;
+        }
+        
+        #calculator4 .stat-desc {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+        
+        /* ==================== 第五个计算器：激活利润与盈亏平衡计算器 ==================== */
+        #calculator5 .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            #calculator5 .calculator {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        #calculator5 .input-section, #calculator5 .results-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        #calculator5 .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #1e293b;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #calculator5 .section-title i {
+            color: #4361ee;
+        }
+        
+        #calculator5 .input-group {
+            margin-bottom: 22px;
+        }
+        
+        #calculator5 label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #475569;
+            font-size: 15px;
+        }
+        
+        #calculator5 input[type="number"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #334155;
+            transition: all 0.3s;
+            background-color: #f8fafc;
+        }
+        
+        #calculator5 input[type="number"]:focus {
+            outline: none;
+            border-color: #4361ee;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        #calculator5 .input-hint {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 6px;
+            font-style: italic;
+        }
+        
+        #calculator5 .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        #calculator5 .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        
+        #calculator5 .btn-primary {
+            background-color: #4361ee;
+            color: white;
+        }
+        
+        #calculator5 .btn-primary:hover {
+            background-color: #3a0ca3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(58, 12, 163, 0.2);
+        }
+        
+        #calculator5 .btn-secondary {
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+        
+        #calculator5 .btn-secondary:hover {
+            background-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+        
+        #calculator5 .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        #calculator5 .result-item {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #4361ee;
+        }
+        
+        #calculator5 .result-item.profit {
+            border-left-color: #10b981;
+        }
+        
+        #calculator5 .result-item.cost {
+            border-left-color: #ef4444;
+        }
+        
+        #calculator5 .result-item.warning {
+            border-left-color: #f59e0b;
+        }
+        
+        #calculator5 .result-title {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        #calculator5 .result-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        #calculator5 .result-value.positive {
+            color: #10b981;
+        }
+        
+        #calculator5 .result-value.negative {
+            color: #ef4444;
+        }
+        
+        #calculator5 .result-value.neutral {
+            color: #4361ee;
+        }
+        
+        #calculator5 .result-desc {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+        
+        #calculator5 .break-even-section {
+            margin-top: 30px;
+            padding: 25px;
+            background-color: #fef3c7;
+            border-radius: 12px;
+            border: 1px solid #fde68a;
+        }
+        
+        #calculator5 .break-even-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #92400e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #calculator5 .break-even-title i {
+            color: #d97706;
+        }
+        
+        #calculator5 .break-even-content {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        #calculator5 .break-even-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        #calculator5 .break-even-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #92400e;
+            margin: 10px 0;
+        }
+        
+        #calculator5 .break-even-desc {
+            font-size: 14px;
+            color: #92400e;
+        }
+        
+        #calculator5 .profit-warning {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        #calculator5 .profit-warning.negative {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        #calculator5 .profit-warning.positive {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        #calculator5 .profit-warning.warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        #calculator5 .formula-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        #calculator5 .formula-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #475569;
+        }
+        
+        #calculator5 .formula-item {
+            margin-bottom: 8px;
+            color: #64748b;
+        }
+        
+        #calculator5 .formula {
+            font-family: 'Courier New', monospace;
+            background-color: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>推广数据分析平台</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#calculator1" class="nav-link active" data-target="calculator1">
+                        <i class="fas fa-chart-line"></i> 曝光量计算
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#calculator2" class="nav-link" data-target="calculator2">
+                        <i class="fas fa-shopping-cart"></i> 订单量预估
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#calculator3" class="nav-link" data-target="calculator3">
+                        <i class="fas fa-money-bill-wave"></i> 营销盈利
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#calculator4" class="nav-link" data-target="calculator4">
+                        <i class="fas fa-calculator"></i> 上游激活价值
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#calculator5" class="nav-link" data-target="calculator5">
+                        <i class="fas fa-balance-scale"></i> 盈亏平衡分析
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要内容区 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 id="pageTitle">📊 曝光量自动计算器</h1>
+            <p id="pageDescription">根据已用时间和当前曝光量，自动计算预计一小时的曝光量</p>
+        </div>
+
+        <!-- 计算器1：曝光量计算器 -->
+        <section id="calculator1" class="calculator-container active">
+            <div class="calculator-card">
+                <div class="calculator-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>曝光量自动计算器</h2>
+                </div>
+                
+                <div class="input-group">
+                    <label for="time">已用时间 (分钟)</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="time" placeholder="输入已过去的时间，如 35" min="1" max="60" step="1">
+                        <span class="unit">分钟</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="exposure">当前曝光量</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="exposure" placeholder="输入当前曝光量，如 2300" min="1" step="1">
+                        <span class="unit">次</span>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="calculate-btn" onclick="calculateExposure()">
+                        🚀 计算预计曝光量
+                    </button>
+                    <button class="reset-btn" onclick="resetExposureCalculator()">
+                        🔄 重置
+                    </button>
+                </div>
+                
+                <div class="result" id="result1">
+                    <h3>预计一小时总曝光量</h3>
+                    <div class="result-value" id="estimatedExposure">0</div>
+                    <div class="result-detail">
+                        基于当前数据推算：每分钟约 <span id="perMinute">0</span> 次曝光
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h4><i class="fas fa-info-circle"></i> 使用说明</h4>
+                    <p>1. 输入当前已经过去的时间（分钟）</p>
+                    <p>2. 输入当前累计的曝光量数值</p>
+                    <p>3. 点击计算按钮，系统会自动推算出一小时的总曝光量</p>
+                    <p>4. 计算原理：基于当前曝光速率，按比例推算60分钟的总量</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 计算器2：订单量预估计算器（增强版） -->
+        <section id="calculator2" class="calculator-container">
+            <div class="calculator-card">
+                <div class="calculator-header">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h2>当日订单量预估计算器</h2>
+                </div>
+                
+                <div class="current-time">
+                    <h3><i class="far fa-clock"></i> 当前时间</h3>
+                    <div id="currentTime">00:00:00</div>
+                </div>
+                
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="currentHour"><i class="fas fa-clock"></i> 当前时间（整点）</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="currentHour" placeholder="输入当前时间，如 17" min="0" max="23" step="1">
+                            <span class="unit">时</span>
+                        </div>
+                        <small style="color: #666; font-size: 14px; margin-top: 5px; display: block;">输入0-23之间的整数</small>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="currentOrders"><i class="fas fa-shopping-cart"></i> 当前订单总数</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="currentOrders" placeholder="输入当前订单总数，如 130" min="0" step="1">
+                            <span class="unit">单</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="hourlyOrders"><i class="fas fa-tachometer-alt"></i> 每小时订单数</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="hourlyOrders" placeholder="输入每小时订单数，如 20" min="0" step="1">
+                        <span class="unit">单/小时</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="costPerOrder"><i class="fas fa-money-bill-wave"></i> 每单推广成本</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="costPerOrder" placeholder="每单推广成本，默认为 19.55" min="0" step="0.01" value="19.55">
+                        <span class="unit">元</span>
+                    </div>
+                    <small style="color: #666; font-size: 14px; margin-top: 5px; display: block;">系统默认每单推广成本为19.55元，可修改</small>
+                </div>
+                
+                <div class="button-group">
+                    <button class="calculate-btn" onclick="calculateOrders()">
+                        <i class="fas fa-calculator"></i> 计算当日预估
+                    </button>
+                    <button class="reset-btn" onclick="resetOrdersCalculator()">
+                        <i class="fas fa-redo"></i> 重置
+                    </button>
+                </div>
+                
+                <div class="results" id="results2">
+                    <div class="result-box">
+                        <div class="result-title">今日剩余小时数</div>
+                        <div class="result-value" id="remainingHours">0</div>
+                        <div class="result-detail">从当前到24点</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <div class="result-title">剩余预计订单</div>
+                        <div class="result-value" id="remainingOrders">0</div>
+                        <div class="result-detail">单</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <div class="result-title">今日总预计订单</div>
+                        <div class="result-value" id="totalOrders">0</div>
+                        <div class="result-detail">单</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <div class="result-title">预估消耗推广费</div>
+                        <div class="result-value" id="estimatedCost">0</div>
+                        <div class="result-detail">元</div>
+                    </div>
+                </div>
+                
+                <div class="time-remaining" id="timeRemaining">
+                    <p>计算说明：剩余 <span id="hoursRemaining">0</span> 小时 × 每小时 <span id="hourlyRate">0</span> 单 = <span id="remainingResult">0</span> 单（剩余订单）<br>
+                    <span id="currentTotal">0</span> 单（当前订单） + <span id="remainingResult2">0</span> 单（剩余订单） = <span id="finalTotal">0</span> 单（今日总预计）<br>
+                    <span id="finalTotal2">0</span> 单（今日总预计） × <span id="costPerOrderValue">19.55</span> 元/单 = <span id="finalCost">0</span> 元（预估消耗推广费）</p>
+                </div>
+                
+                <div class="instructions">
+                    <h4><i class="fas fa-info-circle"></i> 使用说明</h4>
+                    <p>1. 输入当前时间（0-23点，如17表示17点）</p>
+                    <p>2. 输入当前累计订单总数（如130单）</p>
+                    <p>3. 输入每小时订单数（如20单/小时）</p>
+                    <p>4. 输入每单推广成本（默认为19.55元）</p>
+                    <p>5. 点击"计算当日预估"按钮，自动计算今日剩余订单、总订单量和预估推广费用</p>
+                    <p>6. 计算公式：剩余小时数 × 每小时订单数 = 剩余订单；当前订单 + 剩余订单 = 今日总预计订单；总预计订单 × 每单推广成本 = 预估消耗推广费</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 计算器3：营销盈利计算器 -->
+        <section id="calculator3" class="calculator-container">
+            <div class="calculator-card">
+                <div class="calculator-header">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h2>营销盈利计算器</h2>
+                </div>
+                
+                <div class="formula-display">
+                    <h3><i class="fas fa-square-root-alt"></i> 核心计算公式</h3>
+                    <div class="formulas-container">
+                        <div class="formula-box">
+                            <h4>激活成本计算</h4>
+                            <div class="formula">激活成本 = 表单成本 ÷ 激活率</div>
+                            <div class="formula-desc">获得一个激活客户所需的平均成本</div>
+                        </div>
+                        <div class="formula-box">
+                            <h4>激活利润计算</h4>
+                            <div class="formula">激活利润 = 激活价值 - 激活成本</div>
+                            <div class="formula-desc">每个激活客户带来的净利润</div>
+                        </div>
+                        <div class="formula-box">
+                            <h4>盈亏平衡计算</h4>
+                            <div class="formula">盈亏平衡激活率 = 表单成本 ÷ 激活价值</div>
+                            <div class="formula-desc">达到盈亏平衡所需的最小激活率</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-panel">
+                    <button class="btn btn-primary" id="calculateBtn3">
+                        <i class="fas fa-calculator"></i> 自动计算缺失值
+                    </button>
+                    <button class="btn btn-secondary" id="clearBtn3">
+                        <i class="fas fa-broom"></i> 清除所有输入
+                    </button>
+                    <button class="btn btn-secondary" id="exampleBtn3">
+                        <i class="fas fa-lightbulb"></i> 加载示例
+                    </button>
+                </div>
+                
+                <div class="input-section">
+                    <div class="input-box">
+                        <h3><i class="fas fa-gem"></i> 激活价值</h3>
+                        <div class="input-field">
+                            <label for="activationValue3">每个激活带来的利润 (元)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="activationValue3" placeholder="例如: 94" min="0" step="0.01">
+                                <span class="unit">元</span>
+                            </div>
+                            <div class="calc-hint">激活一个客户带来的净利润（收入-成本）</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-box">
+                        <h3><i class="fas fa-percentage"></i> 激活率</h3>
+                        <div class="input-field">
+                            <label for="activationRate3">激活率 (%)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="activationRate3" placeholder="例如: 30" min="0" max="100" step="0.01">
+                                <span class="unit">%</span>
+                            </div>
+                            <div class="calc-hint">表单转化为激活客户的百分比</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-box">
+                        <h3><i class="fas fa-money-bill-wave"></i> 表单成本</h3>
+                        <div class="input-field">
+                            <label for="formCost3">每个表单的成本 (元)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="formCost3" placeholder="例如: 23" min="0" step="0.01">
+                                <span class="unit">元</span>
+                            </div>
+                            <div class="calc-hint">获得一个潜在客户（表单）的平均成本</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-section">
+                    <h3><i class="fas fa-chart-bar"></i> 计算结果</h3>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <div class="result-label">激活成本</div>
+                            <div class="result-value" id="activationCostResult3">-- 元</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">每个激活的利润</div>
+                            <div class="result-value" id="activationProfitResult3">-- 元</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">盈亏平衡激活率</div>
+                            <div class="result-value" id="breakEvenRateResult3">-- %</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">利润状态</div>
+                            <div class="result-value" id="profitStatusResult3">--</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profit-analysis">
+                        <h3><i class="fas fa-chart-line"></i> 盈利分析</h3>
+                        <div class="profit-message" id="profitMessage3">
+                            请输入至少两个值，然后点击"自动计算缺失值"按钮
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h4><i class="fas fa-info-circle"></i> 使用说明</h4>
+                    <p>1. 输入任意两个已知值（激活价值、激活率、表单成本）</p>
+                    <p>2. 点击"自动计算缺失值"按钮，系统将自动计算第三个值</p>
+                    <p>3. 点击"加载示例"查看示例计算过程</p>
+                    <p>4. 分析盈利情况，优化营销策略</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 计算器4：上游激活价值计算器 -->
+        <section id="calculator4" class="calculator-container">
+            <div class="calculator-card">
+                <div class="calculator-header">
+                    <i class="fas fa-calculator"></i>
+                    <h2>上游激活价值计算器</h2>
+                </div>
+                
+                <div class="controls">
+                    <button class="btn btn-primary" id="addRowBtn">
+                        <i class="fas fa-plus"></i> 添加上游
+                    </button>
+                    <button class="btn btn-success" id="calculateBtn4">
+                        <i class="fas fa-calculator"></i> 重新计算
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn4">
+                        <i class="fas fa-redo"></i> 重置数据
+                    </button>
+                    <button class="btn btn-secondary" id="loadExampleBtn4">
+                        <i class="fas fa-file-alt"></i> 加载示例数据
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table id="upstreamTable">
+                        <thead>
+                            <tr>
+                                <th>上游名称</th>
+                                <th>订单数</th>
+                                <th>激活数</th>
+                                <th>佣金 (元/充值用户)</th>
+                                <th>激活充值率 (%)</th>
+                                <th>激活价值 (元/激活)</th>
+                                <th>预估收入 (元)</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr class="empty-row">
+                                <td colspan="8">暂无数据，请点击"添加上游"按钮添加数据</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="summary">
+                    <h2><i class="fas fa-chart-bar"></i> 整体统计</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>总订单数</h3>
+                            <div class="stat-value" id="totalOrders4">0</div>
+                            <div class="stat-desc">所有上游订单数总和</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>总激活数</h3>
+                            <div class="stat-value" id="totalActivations4">0</div>
+                            <div class="stat-desc">所有上游激活数总和</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>总预估收入</h3>
+                            <div class="stat-value" id="totalIncome4">0</div>
+                            <div class="stat-desc">所有上游预估收入总和</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>整体平均激活价值</h3>
+                            <div class="stat-value highlight" id="avgActivationValue4">0</div>
+                            <div class="stat-desc">总预估收入 ÷ 总激活数</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h4><i class="fas fa-info-circle"></i> 使用说明</h4>
+                    <p>1. 点击"添加上游"按钮添加新的上游数据行</p>
+                    <p>2. 输入上游名称、订单数、激活数、佣金和激活充值率</p>
+                    <p>3. 激活价值和预估收入会自动计算</p>
+                    <p>4. 点击"加载示例数据"查看示例，或点击"重置数据"清空表格</p>
+                    <p>5. 底部统计区域会实时显示整体数据</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 计算器5：激活利润与盈亏平衡计算器 -->
+        <section id="calculator5" class="calculator-container">
+            <div class="calculator-card">
+                <div class="calculator-header">
+                    <i class="fas fa-balance-scale"></i>
+                    <h2>激活利润与盈亏平衡计算器</h2>
+                </div>
+                
+                <div class="calculator">
+                    <div class="input-section">
+                        <h2 class="section-title"><i class="fas fa-edit"></i> 输入数据</h2>
+                        
+                        <div class="input-group">
+                            <label for="totalOrders5"><i class="fas fa-shopping-cart"></i> 总订单数</label>
+                            <input type="number" id="totalOrders5" placeholder="输入总订单数" value="1930" min="0" step="1">
+                            <div class="input-hint">所有订单的总数量，包括未激活的订单</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="totalActivations5"><i class="fas fa-user-check"></i> 激活数</label>
+                            <input type="number" id="totalActivations5" placeholder="输入激活数" value="390" min="0" step="1">
+                            <div class="input-hint">已激活的用户数量</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="totalCost5"><i class="fas fa-money-bill-wave"></i> 总消耗金额 (元)</label>
+                            <input type="number" id="totalCost5" placeholder="输入总消耗金额" value="32462.37" min="0" step="0.01">
+                            <div class="input-hint">推广、补单等所有成本的总和</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="activationValue5"><i class="fas fa-gem"></i> 激活价值 (元/激活)</label>
+                            <input type="number" id="activationValue5" placeholder="输入每个激活的价值" value="90" min="0" step="0.01">
+                            <div class="input-hint">每个激活用户带来的平均收入</div>
+                        </div>
+                        
+                        <div class="buttons">
+                            <button class="btn btn-primary" id="calculateBtn5">
+                                <i class="fas fa-calculator"></i> 计算所有指标
+                            </button>
+                            <button class="btn btn-secondary" id="resetBtn5">
+                                <i class="fas fa-redo"></i> 重置
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="results-section">
+                        <h2 class="section-title"><i class="fas fa-chart-bar"></i> 计算结果</h2>
+                        
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <div class="result-title">激活率</div>
+                                <div class="result-value neutral" id="activationRate5">20.21%</div>
+                                <div class="result-desc">激活数 ÷ 总订单数</div>
+                            </div>
+                            
+                            <div class="result-item cost">
+                                <div class="result-title">每单成本</div>
+                                <div class="result-value" id="costPerOrder5">16.82</div>
+                                <div class="result-desc">总消耗金额 ÷ 总订单数</div>
+                            </div>
+                            
+                            <div class="result-item profit">
+                                <div class="result-title">总利润</div>
+                                <div class="result-value positive" id="totalProfit5">2637.63</div>
+                                <div class="result-desc">(激活数 × 激活价值) - 总消耗金额</div>
+                            </div>
+                            
+                            <div class="result-item">
+                                <div class="result-title">每单利润</div>
+                                <div class="result-value positive" id="profitPerOrder5">1.37</div>
+                                <div class="result-desc">总利润 ÷ 总订单数</div>
+                            </div>
+                            
+                            <div class="result-item cost">
+                                <div class="result-title">激活成本</div>
+                                <div class="result-value" id="activationCost5">83.24</div>
+                                <div class="result-desc">总消耗金额 ÷ 激活数</div>
+                            </div>
+                            
+                            <div class="result-item warning">
+                                <div class="result-title">利润比</div>
+                                <div class="result-value" id="profitRatio5">8.13%</div>
+                                <div class="result-desc">总利润 ÷ 总消耗金额</div>
+                            </div>
+                        </div>
+                        
+                        <div id="profitWarning5" class="profit-warning positive">
+                            <i class="fas fa-check-circle"></i>
+                            <div>当前处于盈利状态！总利润为 <strong>2637.63元</strong>，利润比为 <strong>8.13%</strong>。</div>
+                        </div>
+                        
+                        <div class="formula-section">
+                            <div class="formula-title"><i class="fas fa-calculator"></i> 计算公式</div>
+                            <div class="formula-item">激活率 = <span class="formula">激活数 ÷ 总订单数 × 100%</span></div>
+                            <div class="formula-item">每单成本 = <span class="formula">总消耗金额 ÷ 总订单数</span></div>
+                            <div class="formula-item">总利润 = <span class="formula">(激活数 × 激活价值) - 总消耗金额</span></div>
+                            <div class="formula-item">每单利润 = <span class="formula">总利润 ÷ 总订单数</span></div>
+                            <div class="formula-item">激活成本 = <span class="formula">总消耗金额 ÷ 激活数</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="break-even-section">
+                    <h2 class="break-even-title"><i class="fas fa-balance-scale"></i> 盈亏平衡分析</h2>
+                    <div class="break-even-content">
+                        <div class="break-even-item">
+                            <div class="result-title">盈亏平衡激活率</div>
+                            <div class="break-even-value" id="breakEvenRate5">18.69%</div>
+                            <div class="break-even-desc">每单成本 ÷ 激活价值 × 100%</div>
+                            <div class="profit-warning warning">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <div>当激活率达到 <strong id="breakEvenRateText5">18.69%</strong> 时即可实现盈亏平衡</div>
+                            </div>
+                        </div>
+                        
+                        <div class="break-even-item">
+                            <div class="result-title">盈亏平衡每单成本</div>
+                            <div class="break-even-value" id="breakEvenCost5">18.19</div>
+                            <div class="break-even-desc">激活率 × 激活价值</div>
+                            <div class="profit-warning warning">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <div>每单成本需低于 <strong id="breakEvenCostText5">18.19元</strong> 才能实现盈利</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profit-warning warning" style="margin-top: 20px;">
+                        <i class="fas fa-lightbulb"></i>
+                        <div>
+                            <strong>盈利条件提示：</strong> 
+                            要实现盈利，需要满足以下任一条件：
+                            1) 激活率 ≥ <span id="breakEvenRateCondition5">18.69%</span>，或
+                            2) 每单成本 ≤ <span id="breakEvenCostCondition5">18.19元</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h4><i class="fas fa-info-circle"></i> 使用说明</h4>
+                    <p>1. 输入总订单数、激活数、总消耗金额和激活价值</p>
+                    <p>2. 点击"计算所有指标"按钮或输入时自动计算</p>
+                    <p>3. 查看激活率、每单成本、总利润、每单利润和激活成本等关键指标</p>
+                    <p>4. 分析盈亏平衡点，了解实现盈利所需的条件</p>
+                    <p>5. 可根据盈亏平衡分析结果调整营销策略</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 推广数据分析平台 | 设计用于数据分析、业务预估和营销盈利计算</p>
+            <p style="margin-top: 10px; font-size: 14px;">包含曝光量计算、订单量预估、营销盈利分析、上游激活价值和盈亏平衡分析五大功能</p>
+        </div>
+    </footer>
+
+    <script>
+        // 导航切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const calculators = document.querySelectorAll('.calculator-container');
+            const pageTitle = document.getElementById('pageTitle');
+            const pageDescription = document.getElementById('pageDescription');
+            
+            // 页面标题和描述映射
+            const pageData = {
+                calculator1: {
+                    title: "📊 曝光量自动计算器",
+                    description: "根据已用时间和当前曝光量，自动计算预计一小时的曝光量"
+                },
+                calculator2: {
+                    title: "🛒 当日订单量预估计算器",
+                    description: "基于当前时间、订单总数和每小时订单数，预估当日总订单量和推广费用"
+                },
+                calculator3: {
+                    title: "💰 营销盈利计算器",
+                    description: "计算每个激活的盈利情况，分析营销活动的盈利状况"
+                },
+                calculator4: {
+                    title: "📈 上游激活价值计算器",
+                    description: "输入上游订单数据，自动计算激活价值和预估总收入"
+                },
+                calculator5: {
+                    title: "⚖️ 激活利润与盈亏平衡计算器",
+                    description: "计算激活相关关键指标，分析盈亏平衡点和盈利状况"
+                }
+            };
+            
+            // 添加导航点击事件
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 获取目标计算器ID
+                    const targetId = this.getAttribute('data-target');
+                    
+                    // 更新导航激活状态
+                    navLinks.forEach(navLink => navLink.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应的计算器
+                    calculators.forEach(calc => calc.classList.remove('active'));
+                    document.getElementById(targetId).classList.add('active');
+                    
+                    // 更新页面标题和描述
+                    if (pageData[targetId]) {
+                        pageTitle.textContent = pageData[targetId].title;
+                        pageDescription.textContent = pageData[targetId].description;
+                    }
+                    
+                    // 滚动到顶部
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+            
+            // 初始化所有计算器
+            initAllCalculators();
+        });
+        
+        // 初始化所有计算器
+        function initAllCalculators() {
+            // 初始化第一个计算器
+            initExposureCalculator();
+            
+            // 初始化第二个计算器
+            initOrdersCalculator();
+            
+            // 初始化第三个计算器
+            initMarketingCalculator();
+            
+            // 初始化第四个计算器
+            initUpstreamCalculator();
+            
+            // 初始化第五个计算器
+            initActivationProfitCalculator();
+        }
+        
+        // ==================== 第一个计算器：曝光量计算器 ====================
+        function initExposureCalculator() {
+            // 按回车键触发计算
+            const inputs1 = document.querySelectorAll('#calculator1 input');
+            inputs1.forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        calculateExposure();
+                    }
+                });
+            });
+            
+            // 自动聚焦到第一个输入框
+            document.getElementById('time').focus();
+        }
+        
+        function calculateExposure() {
+            // 获取输入值
+            const timeInput = document.getElementById('time');
+            const exposureInput = document.getElementById('exposure');
+            
+            const time = parseFloat(timeInput.value);
+            const exposure = parseFloat(exposureInput.value);
+            
+            // 验证输入
+            if (isNaN(time) || time <= 0 || time > 60) {
+                alert('请输入有效的已用时间（0-60分钟）');
+                timeInput.focus();
+                return;
+            }
+            
+            if (isNaN(exposure) || exposure <= 0) {
+                alert('请输入有效的当前曝光量');
+                exposureInput.focus();
+                return;
+            }
+            
+            // 计算每分钟曝光量
+            const perMinute = exposure / time;
+            
+            // 计算一小时总曝光量
+            const estimatedExposure = perMinute * 60;
+            
+            // 显示结果
+            document.getElementById('perMinute').textContent = perMinute.toFixed(2);
+            document.getElementById('estimatedExposure').textContent = Math.round(estimatedExposure).toLocaleString();
+            
+            // 显示结果区域
+            const resultDiv = document.getElementById('result1');
+            resultDiv.classList.add('show');
+            
+            // 添加动画效果
+            resultDiv.style.animation = 'none';
+            setTimeout(() => {
+                resultDiv.style.animation = 'fadeIn 0.5s ease';
+            }, 10);
+        }
+        
+        function resetExposureCalculator() {
+            document.getElementById('time').value = '';
+            document.getElementById('exposure').value = '';
+            document.getElementById('result1').classList.remove('show');
+            document.getElementById('time').focus();
+        }
+        
+        // ==================== 第二个计算器：订单量预估计算器（增强版） ====================
+        function initOrdersCalculator() {
+            // 显示当前时间
+            function updateCurrentTime() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds}`;
+                
+                // 如果当前时间输入框为空，自动填入当前小时
+                const currentHourInput = document.getElementById('currentHour');
+                if (currentHourInput.value === '') {
+                    currentHourInput.value = now.getHours();
+                }
+            }
+            
+            // 更新当前时间
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            
+            // 按回车键触发计算
+            const inputs2 = document.querySelectorAll('#calculator2 input');
+            inputs2.forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        calculateOrders();
+                    }
+                });
+            });
+            
+            // 隐藏结果区域
+            document.getElementById('results2').style.display = 'none';
+            document.getElementById('timeRemaining').style.display = 'none';
+            
+            // 自动更新每单推广成本显示
+            const costPerOrderInput = document.getElementById('costPerOrder');
+            costPerOrderInput.addEventListener('input', function() {
+                document.getElementById('costPerOrderValue').textContent = this.value;
+            });
+        }
+        
+        function calculateOrders() {
+            // 获取输入值
+            const currentHour = parseInt(document.getElementById('currentHour').value);
+            const currentOrders = parseInt(document.getElementById('currentOrders').value);
+            const hourlyOrders = parseInt(document.getElementById('hourlyOrders').value);
+            const costPerOrder = parseFloat(document.getElementById('costPerOrder').value);
+            
+            // 验证输入
+            if (isNaN(currentHour) || currentHour < 0 || currentHour > 23) {
+                alert('请输入有效的当前时间（0-23之间的整数）');
+                document.getElementById('currentHour').focus();
+                return;
+            }
+            
+            if (isNaN(currentOrders) || currentOrders < 0) {
+                alert('请输入有效的当前订单总数');
+                document.getElementById('currentOrders').focus();
+                return;
+            }
+            
+            if (isNaN(hourlyOrders) || hourlyOrders < 0) {
+                alert('请输入有效的每小时订单数');
+                document.getElementById('hourlyOrders').focus();
+                return;
+            }
+            
+            if (isNaN(costPerOrder) || costPerOrder < 0) {
+                alert('请输入有效的每单推广成本');
+                document.getElementById('costPerOrder').focus();
+                return;
+            }
+            
+            // 计算剩余小时数（从当前时间到24点）
+            const remainingHours = 24 - currentHour;
+            
+            // 计算剩余订单
+            const remainingOrders = remainingHours * hourlyOrders;
+            
+            // 计算今日总预计订单
+            const totalOrders = currentOrders + remainingOrders;
+            
+            // 计算预估消耗推广费
+            const estimatedCost = totalOrders * costPerOrder;
+            
+            // 显示结果
+            document.getElementById('remainingHours').textContent = remainingHours;
+            document.getElementById('remainingOrders').textContent = remainingOrders.toLocaleString();
+            document.getElementById('totalOrders').textContent = totalOrders.toLocaleString();
+            document.getElementById('estimatedCost').textContent = estimatedCost.toFixed(2).toLocaleString();
+            
+            // 显示计算说明
+            document.getElementById('hoursRemaining').textContent = remainingHours;
+            document.getElementById('hourlyRate').textContent = hourlyOrders;
+            document.getElementById('remainingResult').textContent = remainingOrders.toLocaleString();
+            document.getElementById('currentTotal').textContent = currentOrders.toLocaleString();
+            document.getElementById('remainingResult2').textContent = remainingOrders.toLocaleString();
+            document.getElementById('finalTotal').textContent = totalOrders.toLocaleString();
+            document.getElementById('finalTotal2').textContent = totalOrders.toLocaleString();
+            document.getElementById('costPerOrderValue').textContent = costPerOrder.toFixed(2);
+            document.getElementById('finalCost').textContent = estimatedCost.toFixed(2).toLocaleString();
+            
+            // 显示结果区域
+            document.getElementById('results2').style.display = 'grid';
+            document.getElementById('timeRemaining').style.display = 'block';
+            
+            // 添加动画效果
+            const resultBoxes = document.querySelectorAll('#calculator2 .result-box');
+            resultBoxes.forEach((box, index) => {
+                box.style.animation = 'none';
+                setTimeout(() => {
+                    box.style.animation = `fadeIn 0.5s ease ${index * 0.1}s`;
+                }, 10);
+            });
+        }
+        
+        function resetOrdersCalculator() {
+            document.getElementById('currentHour').value = '';
+            document.getElementById('currentOrders').value = '';
+            document.getElementById('hourlyOrders').value = '';
+            document.getElementById('costPerOrder').value = '19.55';
+            document.getElementById('results2').style.display = 'none';
+            document.getElementById('timeRemaining').style.display = 'none';
+            
+            // 自动填入当前小时
+            const now = new Date();
+            document.getElementById('currentHour').value = now.getHours();
+            document.getElementById('currentHour').focus();
+        }
+        
+        // ==================== 第三个计算器：营销盈利计算器 ====================
+        function initMarketingCalculator() {
+            // 获取DOM元素
+            const activationValueInput = document.getElementById('activationValue3');
+            const activationRateInput = document.getElementById('activationRate3');
+            const formCostInput = document.getElementById('formCost3');
+            
+            const activationCostResult = document.getElementById('activationCostResult3');
+            const activationProfitResult = document.getElementById('activationProfitResult3');
+            const breakEvenRateResult = document.getElementById('breakEvenRateResult3');
+            const profitStatusResult = document.getElementById('profitStatusResult3');
+            
+            const calculateBtn = document.getElementById('calculateBtn3');
+            const clearBtn = document.getElementById('clearBtn3');
+            const exampleBtn = document.getElementById('exampleBtn3');
+            
+            const profitMessage = document.getElementById('profitMessage3');
+            
+            // 添加事件监听器
+            calculateBtn.addEventListener('click', calculateMarketingResults);
+            clearBtn.addEventListener('click', clearMarketingInputs);
+            exampleBtn.addEventListener('click', loadMarketingExample);
+            
+            // 为输入框添加Enter键支持
+            activationValueInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') calculateMarketingResults();
+            });
+            
+            activationRateInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') calculateMarketingResults();
+            });
+            
+            formCostInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') calculateMarketingResults();
+            });
+            
+            // 为输入框添加input事件，实时更新计算
+            activationValueInput.addEventListener('input', calculateMarketingResults);
+            activationRateInput.addEventListener('input', calculateMarketingResults);
+            formCostInput.addEventListener('input', calculateMarketingResults);
+            
+            // 初始化示例
+            loadMarketingExample();
+        }
+        
+        function calculateMarketingResults() {
+            // 获取输入值
+            const activationValue = parseFloat(document.getElementById('activationValue3').value);
+            const activationRate = parseFloat(document.getElementById('activationRate3').value);
+            const formCost = parseFloat(document.getElementById('formCost3').value);
+            
+            // 统计有效输入的数量
+            const validInputs = [
+                !isNaN(activationValue) && activationValue > 0,
+                !isNaN(activationRate) && activationRate > 0 && activationRate <= 100,
+                !isNaN(formCost) && formCost > 0
+            ].filter(Boolean).length;
+            
+            // 如果有至少两个有效输入，进行计算
+            if (validInputs >= 2) {
+                let calculatedValues = {};
+                
+                // 根据可用数据计算缺失的值
+                if (!isNaN(activationValue) && !isNaN(activationRate) && isNaN(formCost)) {
+                    // 计算表单成本（从激活成本和激活率推导）
+                    const breakEvenFormCost = activationValue * (activationRate / 100);
+                    document.getElementById('formCost3').value = breakEvenFormCost.toFixed(2);
+                    calculatedValues.formCost = breakEvenFormCost;
+                } else if (!isNaN(activationValue) && !isNaN(formCost) && isNaN(activationRate)) {
+                    // 计算激活率（从表单成本和激活价值推导）
+                    const breakEvenRate = (formCost / activationValue) * 100;
+                    document.getElementById('activationRate3').value = breakEvenRate.toFixed(2);
+                    calculatedValues.activationRate = breakEvenRate;
+                } else if (!isNaN(activationRate) && !isNaN(formCost) && isNaN(activationValue)) {
+                    // 计算激活价值（从表单成本和激活率推导）
+                    const breakEvenActivationValue = formCost / (activationRate / 100);
+                    document.getElementById('activationValue3').value = breakEvenActivationValue.toFixed(2);
+                    calculatedValues.activationValue = breakEvenActivationValue;
+                }
+                
+                // 现在所有三个值都应该有效了，进行计算
+                const av = !isNaN(activationValue) ? activationValue : calculatedValues.activationValue;
+                const ar = !isNaN(activationRate) ? activationRate : calculatedValues.activationRate;
+                const fc = !isNaN(formCost) ? formCost : calculatedValues.formCost;
+                
+                // 计算关键指标
+                const activationCost = fc / (ar / 100);
+                const activationProfit = av - activationCost;
+                const breakEvenRate = (fc / av) * 100;
+                
+                // 更新结果展示
+                document.getElementById('activationCostResult3').textContent = `${activationCost.toFixed(2)} 元`;
+                document.getElementById('activationProfitResult3').textContent = `${activationProfit.toFixed(2)} 元`;
+                document.getElementById('breakEvenRateResult3').textContent = `${breakEvenRate.toFixed(2)} %`;
+                
+                // 更新利润状态
+                if (activationProfit > 0) {
+                    document.getElementById('profitStatusResult3').textContent = "盈利";
+                    document.getElementById('profitStatusResult3').style.color = "#28a745";
+                } else if (activationProfit < 0) {
+                    document.getElementById('profitStatusResult3').textContent = "亏损";
+                    document.getElementById('profitStatusResult3').style.color = "#dc3545";
+                } else {
+                    document.getElementById('profitStatusResult3').textContent = "盈亏平衡";
+                    document.getElementById('profitStatusResult3').style.color = "#ffc107";
+                }
+                
+                // 进行盈利分析
+                performMarketingProfitAnalysis(av, ar, fc, activationCost, activationProfit, breakEvenRate);
+            } else {
+                // 没有足够的数据
+                document.getElementById('activationCostResult3').textContent = "-- 元";
+                document.getElementById('activationProfitResult3').textContent = "-- 元";
+                document.getElementById('breakEvenRateResult3').textContent = "-- %";
+                document.getElementById('profitStatusResult3').textContent = "--";
+                document.getElementById('profitStatusResult3').style.color = "#6c757d";
+                
+                if (validInputs === 0) {
+                    document.getElementById('profitMessage3').textContent = "请输入至少两个值进行计算";
+                    document.getElementById('profitMessage3').className = "profit-message profit-neutral";
+                } else if (validInputs === 1) {
+                    document.getElementById('profitMessage3').textContent = "请再输入一个值进行计算";
+                    document.getElementById('profitMessage3').className = "profit-message profit-neutral";
+                }
+            }
+        }
+        
+        function performMarketingProfitAnalysis(activationValue, activationRate, formCost, activationCost, activationProfit, breakEvenRate) {
+            let message = "";
+            let messageClass = "";
+            
+            if (activationProfit > 0) {
+                message = `盈利状态：每个激活可盈利 ${activationProfit.toFixed(2)} 元。您的激活率 ${activationRate.toFixed(2)}% 高于盈亏平衡点 ${breakEvenRate.toFixed(2)}%。`;
+                messageClass = "profit-positive";
+            } else if (activationProfit < 0) {
+                message = `亏损状态：每个激活亏损 ${Math.abs(activationProfit).toFixed(2)} 元。需要将激活率提高到 ${breakEvenRate.toFixed(2)}% 才能盈利（当前为 ${activationRate.toFixed(2)}%）。`;
+                messageClass = "profit-negative";
+            } else {
+                message = "盈亏平衡：您的激活率刚好达到盈亏平衡点，没有盈利也没有亏损。";
+                messageClass = "profit-neutral";
+            }
+            
+            // 添加详细分析
+            const formsCount = 100; // 假设100个表单
+            const totalFormCost = formCost * formsCount;
+            const activationsCount = Math.round(formsCount * activationRate / 100);
+            const totalActivationProfit = activationValue * activationsCount;
+            const totalActivationCost = activationCost * activationsCount;
+            const totalNetProfit = activationProfit * activationsCount;
+            
+            const detailedAnalysis = document.createElement('div');
+            detailedAnalysis.style.marginTop = "15px";
+            detailedAnalysis.style.fontSize = "0.95rem";
+            detailedAnalysis.innerHTML = `
+                <p><strong>基于${formsCount}个表单的详细分析：</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>总表单成本：<strong>${totalFormCost.toFixed(2)}</strong> 元</li>
+                    <li>激活客户数：<strong>${activationsCount}</strong> 个</li>
+                    <li>激活总利润：<strong>${totalActivationProfit.toFixed(2)}</strong> 元</li>
+                    <li>激活总成本：<strong>${totalActivationCost.toFixed(2)}</strong> 元</li>
+                    <li>净利润：<strong>${totalNetProfit.toFixed(2)}</strong> 元</li>
+                </ul>
+            `;
+            
+            const profitMessage = document.getElementById('profitMessage3');
+            profitMessage.innerHTML = message;
+            profitMessage.className = `profit-message ${messageClass}`;
+            profitMessage.appendChild(detailedAnalysis);
+        }
+        
+        function clearMarketingInputs() {
+            document.getElementById('activationValue3').value = '';
+            document.getElementById('activationRate3').value = '';
+            document.getElementById('formCost3').value = '';
+            
+            document.getElementById('activationCostResult3').textContent = "-- 元";
+            document.getElementById('activationProfitResult3').textContent = "-- 元";
+            document.getElementById('breakEvenRateResult3').textContent = "-- %";
+            document.getElementById('profitStatusResult3').textContent = "--";
+            document.getElementById('profitStatusResult3').style.color = "#6c757d";
+            
+            document.getElementById('profitMessage3').textContent = "请输入至少两个值进行计算";
+            document.getElementById('profitMessage3').className = "profit-message profit-neutral";
+        }
+        
+        function loadMarketingExample() {
+            document.getElementById('activationValue3').value = 94;
+            document.getElementById('activationRate3').value = 25;
+            document.getElementById('formCost3').value = 23;
+            
+            calculateMarketingResults();
+            
+            document.getElementById('profitMessage3').textContent = "示例已加载：激活价值=94元，激活率=25%，表单成本=23元";
+            document.getElementById('profitMessage3').className = "profit-message profit-neutral";
+        }
+        
+        // ==================== 第四个计算器：上游激活价值计算器 ====================
+        function initUpstreamCalculator() {
+            // 示例数据（基于您之前提供的数据）
+            const exampleData = [
+                { name: "骏伯", orders: 1750, activations: 679, commission: 120, rate: 99.53 },
+                { name: "可当", orders: 894, activations: 75, commission: 120, rate: 62.67 },
+                { name: "纵横", orders: 706, activations: 71, commission: 120, rate: 57.75 },
+                { name: "相森", orders: 391, activations: 47, commission: 120, rate: 100 },
+                { name: "柏川", orders: 339, activations: 74, commission: 90, rate: 95.56 },
+                { name: "怡通", orders: 323, activations: 51, commission: 120, rate: 70.59 },
+                { name: "号令", orders: 308, activations: 39, commission: 240, rate: 76.92 },
+                { name: "卡鑫星", orders: 118, activations: 19, commission: 115, rate: 68.42 },
+                { name: "卡赛", orders: 28, activations: 6, commission: 110, rate: 66.67 },
+                { name: "金普泰", orders: 13, activations: 1, commission: 120, rate: 100 }
+            ];
+            
+            const tableBody = document.getElementById('tableBody');
+            const addRowBtn = document.getElementById('addRowBtn');
+            const calculateBtn = document.getElementById('calculateBtn4');
+            const resetBtn = document.getElementById('resetBtn4');
+            const loadExampleBtn = document.getElementById('loadExampleBtn4');
+            
+            // 添加上游行
+            function addRow(data = {}) {
+                // 移除空行提示
+                const emptyRow = tableBody.querySelector('.empty-row');
+                if (emptyRow) emptyRow.remove();
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" class="upstream-name" value="${data.name || ''}" placeholder="输入上游名称"></td>
+                    <td><input type="number" class="orders" value="${data.orders || ''}" placeholder="订单数" min="0"></td>
+                    <td><input type="number" class="activations" value="${data.activations || ''}" placeholder="激活数" min="0"></td>
+                    <td><input type="number" class="commission" value="${data.commission || ''}" placeholder="佣金" min="0" step="0.01"></td>
+                    <td><input type="number" class="rate" value="${data.rate || ''}" placeholder="充值率" min="0" max="100" step="0.01"></td>
+                    <td class="calc-cell activation-value">0.00</td>
+                    <td class="calc-cell estimated-income">0.00</td>
+                    <td><button class="delete-btn"><i class="fas fa-trash-alt"></i></button></td>
+                `;
+                
+                tableBody.appendChild(row);
+                
+                // 添加删除按钮事件
+                const deleteBtn = row.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', function() {
+                    row.remove();
+                    calculateUpstreamTotals();
+                    // 如果删除了所有行，显示空行提示
+                    if (tableBody.children.length === 0) {
+                        showEmptyRow();
+                    }
+                });
+                
+                // 为输入框添加事件监听
+                const inputs = row.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.addEventListener('input', calculateRow);
+                    input.addEventListener('change', calculateRow);
+                });
+                
+                // 计算该行数据
+                calculateRow.call(row);
+                
+                return row;
+            }
+            
+            // 计算单行数据
+            function calculateRow() {
+                const row = this.closest ? this.closest('tr') : this;
+                const orders = parseFloat(row.querySelector('.orders').value) || 0;
+                const activations = parseFloat(row.querySelector('.activations').value) || 0;
+                const commission = parseFloat(row.querySelector('.commission').value) || 0;
+                const rate = parseFloat(row.querySelector('.rate').value) || 0;
+                
+                // 计算激活价值 = 佣金 * (激活充值率 / 100)
+                const activationValue = commission * (rate / 100);
+                // 计算预估收入 = 激活数 * 激活价值
+                const estimatedIncome = activations * activationValue;
+                
+                // 更新显示
+                row.querySelector('.activation-value').textContent = activationValue.toFixed(2);
+                row.querySelector('.estimated-income').textContent = estimatedIncome.toFixed(2);
+                
+                // 更新总计
+                calculateUpstreamTotals();
+            }
+            
+            // 计算总计
+            function calculateUpstreamTotals() {
+                const rows = tableBody.querySelectorAll('tr:not(.empty-row)');
+                let totalOrders = 0;
+                let totalActivations = 0;
+                let totalIncome = 0;
+                
+                rows.forEach(row => {
+                    const orders = parseFloat(row.querySelector('.orders').value) || 0;
+                    const activations = parseFloat(row.querySelector('.activations').value) || 0;
+                    const income = parseFloat(row.querySelector('.estimated-income').textContent) || 0;
+                    
+                    totalOrders += orders;
+                    totalActivations += activations;
+                    totalIncome += income;
+                });
+                
+                // 计算整体平均激活价值
+                const avgActivationValue = totalActivations > 0 ? totalIncome / totalActivations : 0;
+                
+                // 更新显示
+                document.getElementById('totalOrders4').textContent = totalOrders.toLocaleString();
+                document.getElementById('totalActivations4').textContent = totalActivations.toLocaleString();
+                document.getElementById('totalIncome4').textContent = totalIncome.toFixed(2);
+                document.getElementById('avgActivationValue4').textContent = avgActivationValue.toFixed(2);
+            }
+            
+            // 显示空行提示
+            function showEmptyRow() {
+                const emptyRow = document.createElement('tr');
+                emptyRow.className = 'empty-row';
+                emptyRow.innerHTML = '<td colspan="8">暂无数据，请点击"添加上游"按钮添加数据</td>';
+                tableBody.appendChild(emptyRow);
+            }
+            
+            // 重置数据
+            function resetData() {
+                tableBody.innerHTML = '';
+                showEmptyRow();
+                calculateUpstreamTotals();
+            }
+            
+            // 加载示例数据
+            function loadExampleData() {
+                resetData();
+                exampleData.forEach(data => addRow(data));
+            }
+            
+            // 事件监听
+            addRowBtn.addEventListener('click', () => addRow());
+            calculateBtn.addEventListener('click', calculateUpstreamTotals);
+            resetBtn.addEventListener('click', resetData);
+            loadExampleBtn.addEventListener('click', loadExampleData);
+            
+            // 初始加载示例数据
+            loadExampleData();
+        }
+        
+        // ==================== 第五个计算器：激活利润与盈亏平衡计算器 ====================
+        function initActivationProfitCalculator() {
+            const totalOrdersInput = document.getElementById('totalOrders5');
+            const totalActivationsInput = document.getElementById('totalActivations5');
+            const totalCostInput = document.getElementById('totalCost5');
+            const activationValueInput = document.getElementById('activationValue5');
+            const calculateBtn = document.getElementById('calculateBtn5');
+            const resetBtn = document.getElementById('resetBtn5');
+            
+            // 结果元素
+            const activationRateEl = document.getElementById('activationRate5');
+            const costPerOrderEl = document.getElementById('costPerOrder5');
+            const totalProfitEl = document.getElementById('totalProfit5');
+            const profitPerOrderEl = document.getElementById('profitPerOrder5');
+            const activationCostEl = document.getElementById('activationCost5');
+            const profitRatioEl = document.getElementById('profitRatio5');
+            const profitWarningEl = document.getElementById('profitWarning5');
+            
+            // 盈亏平衡元素
+            const breakEvenRateEl = document.getElementById('breakEvenRate5');
+            const breakEvenCostEl = document.getElementById('breakEvenCost5');
+            const breakEvenRateTextEl = document.getElementById('breakEvenRateText5');
+            const breakEvenCostTextEl = document.getElementById('breakEvenCostText5');
+            const breakEvenRateConditionEl = document.getElementById('breakEvenRateCondition5');
+            const breakEvenCostConditionEl = document.getElementById('breakEvenCostCondition5');
+            
+            // 计算所有指标
+            function calculateMetrics() {
+                // 获取输入值
+                const totalOrders = parseFloat(totalOrdersInput.value) || 0;
+                const totalActivations = parseFloat(totalActivationsInput.value) || 0;
+                const totalCost = parseFloat(totalCostInput.value) || 0;
+                const activationValue = parseFloat(activationValueInput.value) || 0;
+                
+                // 计算基础指标
+                const activationRate = totalOrders > 0 ? (totalActivations / totalOrders) * 100 : 0;
+                const costPerOrder = totalOrders > 0 ? totalCost / totalOrders : 0;
+                const totalProfit = (totalActivations * activationValue) - totalCost;
+                const profitPerOrder = totalOrders > 0 ? totalProfit / totalOrders : 0;
+                const activationCost = totalActivations > 0 ? totalCost / totalActivations : 0;
+                const profitRatio = totalCost > 0 ? (totalProfit / totalCost) * 100 : 0;
+                
+                // 计算盈亏平衡点
+                const breakEvenRate = activationValue > 0 ? (costPerOrder / activationValue) * 100 : 0;
+                const breakEvenCost = (activationRate / 100) * activationValue;
+                
+                // 更新结果显示
+                activationRateEl.textContent = activationRate.toFixed(2) + '%';
+                costPerOrderEl.textContent = costPerOrder.toFixed(2);
+                totalProfitEl.textContent = totalProfit.toFixed(2);
+                profitPerOrderEl.textContent = profitPerOrder.toFixed(2);
+                activationCostEl.textContent = activationCost.toFixed(2);
+                profitRatioEl.textContent = profitRatio.toFixed(2) + '%';
+                
+                // 更新盈亏平衡点显示
+                breakEvenRateEl.textContent = breakEvenRate.toFixed(2) + '%';
+                breakEvenCostEl.textContent = breakEvenCost.toFixed(2);
+                breakEvenRateTextEl.textContent = breakEvenRate.toFixed(2) + '%';
+                breakEvenCostTextEl.textContent = breakEvenCost.toFixed(2) + '元';
+                breakEvenRateConditionEl.textContent = breakEvenRate.toFixed(2) + '%';
+                breakEvenCostConditionEl.textContent = breakEvenCost.toFixed(2) + '元';
+                
+                // 更新利润警告信息
+                updateProfitWarning(totalProfit, profitRatio);
+                
+                // 更新数值颜色
+                updateValueColors(totalProfit, profitRatio);
+            }
+            
+            // 更新利润警告信息
+            function updateProfitWarning(totalProfit, profitRatio) {
+                if (totalProfit > 0) {
+                    profitWarningEl.className = 'profit-warning positive';
+                    profitWarningEl.innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        <div>当前处于盈利状态！总利润为 <strong>${totalProfit.toFixed(2)}元</strong>，利润比为 <strong>${profitRatio.toFixed(2)}%</strong>。</div>
+                    `;
+                } else if (totalProfit < 0) {
+                    profitWarningEl.className = 'profit-warning negative';
+                    profitWarningEl.innerHTML = `
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>当前处于亏损状态！总亏损为 <strong>${Math.abs(totalProfit).toFixed(2)}元</strong>，亏损比为 <strong>${Math.abs(profitRatio).toFixed(2)}%</strong>。</div>
+                    `;
+                } else {
+                    profitWarningEl.className = 'profit-warning warning';
+                    profitWarningEl.innerHTML = `
+                        <i class="fas fa-balance-scale"></i>
+                        <div>当前处于盈亏平衡点！总利润为 <strong>0元</strong>。</div>
+                    `;
+                }
+            }
+            
+            // 更新数值颜色
+            function updateValueColors(totalProfit, profitRatio) {
+                // 总利润颜色
+                if (totalProfit > 0) {
+                    totalProfitEl.className = 'result-value positive';
+                } else if (totalProfit < 0) {
+                    totalProfitEl.className = 'result-value negative';
+                } else {
+                    totalProfitEl.className = 'result-value';
+                }
+                
+                // 每单利润颜色
+                if (profitPerOrderEl) {
+                    const profitPerOrder = parseFloat(profitPerOrderEl.textContent) || 0;
+                    if (profitPerOrder > 0) {
+                        profitPerOrderEl.className = 'result-value positive';
+                    } else if (profitPerOrder < 0) {
+                        profitPerOrderEl.className = 'result-value negative';
+                    } else {
+                        profitPerOrderEl.className = 'result-value';
+                    }
+                }
+                
+                // 利润比颜色
+                if (profitRatio > 0) {
+                    profitRatioEl.className = 'result-value positive';
+                } else if (profitRatio < 0) {
+                    profitRatioEl.className = 'result-value negative';
+                } else {
+                    profitRatioEl.className = 'result-value';
+                }
+            }
+            
+            // 重置数据
+            function resetData() {
+                totalOrdersInput.value = '';
+                totalActivationsInput.value = '';
+                totalCostInput.value = '';
+                activationValueInput.value = '';
+                
+                activationRateEl.textContent = '0.00%';
+                costPerOrderEl.textContent = '0.00';
+                totalProfitEl.textContent = '0.00';
+                profitPerOrderEl.textContent = '0.00';
+                activationCostEl.textContent = '0.00';
+                profitRatioEl.textContent = '0.00%';
+                
+                breakEvenRateEl.textContent = '0.00%';
+                breakEvenCostEl.textContent = '0.00';
+                breakEvenRateTextEl.textContent = '0.00%';
+                breakEvenCostTextEl.textContent = '0.00元';
+                breakEvenRateConditionEl.textContent = '0.00%';
+                breakEvenCostConditionEl.textContent = '0.00元';
+                
+                profitWarningEl.className = 'profit-warning warning';
+                profitWarningEl.innerHTML = `
+                    <i class="fas fa-info-circle"></i>
+                    <div>请输入数据并点击"计算所有指标"按钮</div>
+                `;
+                
+                updateValueColors(0, 0);
+            }
+            
+            // 事件监听
+            calculateBtn.addEventListener('click', calculateMetrics);
+            resetBtn.addEventListener('click', resetData);
+            
+            // 输入框变化时自动计算
+            [totalOrdersInput, totalActivationsInput, totalCostInput, activationValueInput].forEach(input => {
+                input.addEventListener('input', calculateMetrics);
+            });
+            
+            // 初始化计算
+            calculateMetrics();
+        }
+    </script>
+</body>
+</html>
