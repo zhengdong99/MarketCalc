@@ -814,176 +814,249 @@
         }
         
         /* ==================== 第四个计算器：上游激活价值计算器 ==================== */
-        #calculator4 .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        #calculator4 .btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        #calculator4 .btn-primary {
-            background-color: #4361ee;
-            color: white;
-        }
-        
-        #calculator4 .btn-primary:hover {
-            background-color: #3a0ca3;
-            transform: translateY(-2px);
-        }
-        
-        #calculator4 .btn-success {
-            background-color: #10b981;
-            color: white;
-        }
-        
-        #calculator4 .btn-success:hover {
-            background-color: #0da271;
-            transform: translateY(-2px);
-        }
-        
-        #calculator4 .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        #calculator4 .btn-secondary:hover {
-            background-color: #5a6268;
-            transform: translateY(-2px);
-        }
-        
-        #calculator4 .table-container {
-            overflow-x: auto;
-            margin-bottom: 30px;
-        }
-        
-        #calculator4 table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        #calculator4 th {
-            background-color: #f1f5f9;
-            padding: 16px 12px;
-            text-align: left;
-            font-weight: 600;
-            color: #374151;
-            border-bottom: 2px solid #e5e7eb;
-            white-space: nowrap;
-        }
-        
-        #calculator4 td {
-            padding: 14px 12px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        #calculator4 tr:hover {
-            background-color: #f9fafb;
-        }
-        
-        #calculator4 input[type="text"], #calculator4 input[type="number"] {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.2s;
-        }
-        
-        #calculator4 input[type="text"]:focus, #calculator4 input[type="number"]:focus {
-            outline: none;
-            border-color: #4361ee;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-        }
-        
-        #calculator4 .calc-cell {
-            font-weight: 600;
-            color: #1f2937;
-            background-color: #f8fafc;
-        }
-        
-        #calculator4 .delete-btn {
-            background: none;
-            border: none;
-            color: #ef4444;
-            cursor: pointer;
-            font-size: 18px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s;
-        }
-        
-        #calculator4 .delete-btn:hover {
-            background-color: #fee2e2;
-        }
-        
-        #calculator4 .summary {
-            background-color: #f1f5f9;
-            padding: 25px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        
-        #calculator4 .summary h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: #1f2937;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        #calculator4 .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        #calculator4 .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        #calculator4 .stat-card h3 {
-            font-size: 15px;
-            color: #6b7280;
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-        
-        #calculator4 .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1f2937;
-        }
-        
-        #calculator4 .stat-value.highlight {
-            color: #10b981;
-        }
-        
-        #calculator4 .stat-desc {
-            font-size: 13px;
-            color: #9ca3af;
-            margin-top: 5px;
-        }
+       /* ==================== 第四个计算器：上游激活价值计算器 ==================== */
+#calculator4 .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+#calculator4 .btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#calculator4 .btn-primary {
+    background-color: #4361ee;
+    color: white;
+}
+
+#calculator4 .btn-primary:hover {
+    background-color: #3a0ca3;
+    transform: translateY(-2px);
+}
+
+#calculator4 .btn-success {
+    background-color: #10b981;
+    color: white;
+}
+
+#calculator4 .btn-success:hover {
+    background-color: #0da271;
+    transform: translateY(-2px);
+}
+
+#calculator4 .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+#calculator4 .btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+#calculator4 .table-container {
+    overflow-x: auto;
+    margin-bottom: 30px;
+}
+
+#calculator4 table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 添加固定表格布局 */
+}
+
+/* 调整表格列宽 */
+#calculator4 th:nth-child(1), #calculator4 td:nth-child(1) {
+    width: 25%; /* 上游名称 - 加宽 */
+}
+
+#calculator4 th:nth-child(2), #calculator4 td:nth-child(2) {
+    width: 12%; /* 订单数 */
+}
+
+#calculator4 th:nth-child(3), #calculator4 td:nth-child(3) {
+    width: 12%; /* 激活数 */
+}
+
+#calculator4 th:nth-child(4), #calculator4 td:nth-child(4) {
+    width: 8%; /* 佣金 - 变窄 */
+    min-width: 80px; /* 最小宽度 */
+}
+
+#calculator4 th:nth-child(5), #calculator4 td:nth-child(5) {
+    width: 12%; /* 激活充值率 */
+}
+
+#calculator4 th:nth-child(6), #calculator4 td:nth-child(6) {
+    width: 12%; /* 激活价值 */
+}
+
+#calculator4 th:nth-child(7), #calculator4 td:nth-child(7) {
+    width: 15%; /* 预估收入 */
+}
+
+#calculator4 th:nth-child(8), #calculator4 td:nth-child(8) {
+    width: 4%; /* 操作列 */
+    min-width: 50px;
+}
+
+#calculator4 th {
+    background-color: #f1f5f9;
+    padding: 16px 8px; /* 调整内边距 */
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 文字溢出显示省略号 */
+}
+
+#calculator4 td {
+    padding: 14px 8px; /* 调整内边距 */
+    border-bottom: 1px solid #e5e7eb;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#calculator4 tr:hover {
+    background-color: #f9fafb;
+}
+
+#calculator4 input[type="text"], #calculator4 input[type="number"] {
+    width: 100%;
+    padding: 10px 8px; /* 调整内边距 */
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+    box-sizing: border-box; /* 确保内边距不影响宽度 */
+}
+
+#calculator4 input[type="text"]:focus, #calculator4 input[type="number"]:focus {
+    outline: none;
+    border-color: #4361ee;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+/* 特别调整上游名称输入框 */
+#calculator4 td:nth-child(1) input[type="text"] {
+    padding: 10px 12px;
+    font-size: 15px;
+}
+
+/* 特别调整佣金输入框 - 更窄 */
+#calculator4 td:nth-child(4) input[type="number"] {
+    padding: 10px 5px;
+    text-align: center;
+    font-size: 14px;
+    max-width: 80px; /* 限制最大宽度 */
+    margin: 0 auto;
+    display: block;
+}
+
+/* 调整计算单元格样式 */
+#calculator4 .calc-cell {
+    font-weight: 600;
+    color: #1f2937;
+    background-color: #f8fafc;
+    text-align: center;
+    padding: 14px 5px;
+}
+
+/* 调整预估收入单元格 - 数字可能较大 */
+#calculator4 td:nth-child(7).calc-cell {
+    font-size: 15px;
+    color: #10b981; /* 绿色突出显示 */
+}
+
+/* 调整激活价值单元格 */
+#calculator4 td:nth-child(6).calc-cell {
+    color: #4361ee; /* 蓝色突出显示 */
+}
+
+#calculator4 .delete-btn {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    margin: 0 auto;
+}
+
+#calculator4 .delete-btn:hover {
+    background-color: #fee2e2;
+}
+
+#calculator4 .summary {
+    background-color: #f1f5f9;
+    padding: 25px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+#calculator4 .summary h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#calculator4 .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+#calculator4 .stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+#calculator4 .stat-card h3 {
+    font-size: 15px;
+    color: #6b7280;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+#calculator4 .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+#calculator4 .stat-value.highlight {
+    color: #10b981;
+}
+
+#calculator4 .stat-desc {
+    font-size: 13px;
+    color: #9ca3af;
+    margin-top: 5px;
+}
         
         /* ==================== 第五个计算器：激活利润与盈亏平衡计算器 ==================== */
         #calculator5 .calculator {
@@ -1603,7 +1676,7 @@
                                 <th>上游名称</th>
                                 <th>订单数</th>
                                 <th>激活数</th>
-                                <th>佣金 (元/充值用户)</th>
+                                <th>佣金</th>
                                 <th>激活充值率 (%)</th>
                                 <th>激活价值 (元/激活)</th>
                                 <th>预估收入 (元)</th>
@@ -2276,151 +2349,234 @@
             document.getElementById('profitMessage3').textContent = "示例已加载：激活价值=94元，激活率=25%，表单成本=23元";
             document.getElementById('profitMessage3').className = "profit-message profit-neutral";
         }
+       // ==================== 第四个计算器：上游激活价值计算器 ====================
+function initUpstreamCalculator() {
+    // 示例数据（基于您之前提供的数据）
+    const exampleData = [
+        { name: "骏伯", orders: 1750, activations: 679, commission: 120, rate: 99.53 },
+        { name: "可当", orders: 894, activations: 75, commission: 120, rate: 62.67 },
+        { name: "纵横", orders: 706, activations: 71, commission: 120, rate: 57.75 },
+        { name: "相森", orders: 391, activations: 47, commission: 120, rate: 100 },
+        { name: "柏川", orders: 339, activations: 74, commission: 90, rate: 95.56 },
+        { name: "怡通", orders: 323, activations: 51, commission: 120, rate: 70.59 },
+        { name: "号令", orders: 308, activations: 39, commission: 240, rate: 76.92 },
+        { name: "卡鑫星", orders: 118, activations: 19, commission: 115, rate: 68.42 },
+        { name: "卡赛", orders: 28, activations: 6, commission: 110, rate: 66.67 },
+        { name: "金普泰", orders: 13, activations: 1, commission: 120, rate: 100 }
+    ];
+    
+    const tableBody = document.getElementById('tableBody');
+    const addRowBtn = document.getElementById('addRowBtn');
+    const calculateBtn = document.getElementById('calculateBtn4');
+    const resetBtn = document.getElementById('resetBtn4');
+    const loadExampleBtn = document.getElementById('loadExampleBtn4');
+    
+    // 从localStorage获取存储的键名
+    const storageKey = 'upstream_calculator_data';
+    
+    // 从本地存储加载数据
+    function loadFromLocalStorage() {
+        const savedData = localStorage.getItem(storageKey);
+        if (savedData) {
+            try {
+                return JSON.parse(savedData);
+            } catch (e) {
+                console.error('解析本地存储数据失败:', e);
+                return null;
+            }
+        }
+        return null;
+    }
+    
+    // 保存数据到本地存储
+    function saveToLocalStorage() {
+        const rows = tableBody.querySelectorAll('tr:not(.empty-row)');
+        const dataToSave = [];
         
-        // ==================== 第四个计算器：上游激活价值计算器 ====================
-        function initUpstreamCalculator() {
-            // 示例数据（基于您之前提供的数据）
-            const exampleData = [
-                { name: "骏伯", orders: 1750, activations: 679, commission: 120, rate: 99.53 },
-                { name: "可当", orders: 894, activations: 75, commission: 120, rate: 62.67 },
-                { name: "纵横", orders: 706, activations: 71, commission: 120, rate: 57.75 },
-                { name: "相森", orders: 391, activations: 47, commission: 120, rate: 100 },
-                { name: "柏川", orders: 339, activations: 74, commission: 90, rate: 95.56 },
-                { name: "怡通", orders: 323, activations: 51, commission: 120, rate: 70.59 },
-                { name: "号令", orders: 308, activations: 39, commission: 240, rate: 76.92 },
-                { name: "卡鑫星", orders: 118, activations: 19, commission: 115, rate: 68.42 },
-                { name: "卡赛", orders: 28, activations: 6, commission: 110, rate: 66.67 },
-                { name: "金普泰", orders: 13, activations: 1, commission: 120, rate: 100 }
-            ];
+        rows.forEach(row => {
+            const name = row.querySelector('.upstream-name').value || '';
+            const orders = parseFloat(row.querySelector('.orders').value) || 0;
+            const activations = parseFloat(row.querySelector('.activations').value) || 0;
+            const commission = parseFloat(row.querySelector('.commission').value) || 0;
+            const rate = parseFloat(row.querySelector('.rate').value) || 0;
             
-            const tableBody = document.getElementById('tableBody');
-            const addRowBtn = document.getElementById('addRowBtn');
-            const calculateBtn = document.getElementById('calculateBtn4');
-            const resetBtn = document.getElementById('resetBtn4');
-            const loadExampleBtn = document.getElementById('loadExampleBtn4');
-            
-            // 添加上游行
-            function addRow(data = {}) {
-                // 移除空行提示
-                const emptyRow = tableBody.querySelector('.empty-row');
-                if (emptyRow) emptyRow.remove();
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><input type="text" class="upstream-name" value="${data.name || ''}" placeholder="输入上游名称"></td>
-                    <td><input type="number" class="orders" value="${data.orders || ''}" placeholder="订单数" min="0"></td>
-                    <td><input type="number" class="activations" value="${data.activations || ''}" placeholder="激活数" min="0"></td>
-                    <td><input type="number" class="commission" value="${data.commission || ''}" placeholder="佣金" min="0" step="0.01"></td>
-                    <td><input type="number" class="rate" value="${data.rate || ''}" placeholder="充值率" min="0" max="100" step="0.01"></td>
-                    <td class="calc-cell activation-value">0.00</td>
-                    <td class="calc-cell estimated-income">0.00</td>
-                    <td><button class="delete-btn"><i class="fas fa-trash-alt"></i></button></td>
-                `;
-                
-                tableBody.appendChild(row);
-                
-                // 添加删除按钮事件
-                const deleteBtn = row.querySelector('.delete-btn');
-                deleteBtn.addEventListener('click', function() {
-                    row.remove();
-                    calculateUpstreamTotals();
-                    // 如果删除了所有行，显示空行提示
-                    if (tableBody.children.length === 0) {
-                        showEmptyRow();
-                    }
+            // 只保存有数据的行
+            if (name || orders > 0 || activations > 0 || commission > 0 || rate > 0) {
+                dataToSave.push({
+                    name: name,
+                    orders: orders,
+                    activations: activations,
+                    commission: commission,
+                    rate: rate
                 });
-                
-                // 为输入框添加事件监听
-                const inputs = row.querySelectorAll('input');
-                inputs.forEach(input => {
-                    input.addEventListener('input', calculateRow);
-                    input.addEventListener('change', calculateRow);
-                });
-                
-                // 计算该行数据
-                calculateRow.call(row);
-                
-                return row;
             }
-            
-            // 计算单行数据
-            function calculateRow() {
-                const row = this.closest ? this.closest('tr') : this;
-                const orders = parseFloat(row.querySelector('.orders').value) || 0;
-                const activations = parseFloat(row.querySelector('.activations').value) || 0;
-                const commission = parseFloat(row.querySelector('.commission').value) || 0;
-                const rate = parseFloat(row.querySelector('.rate').value) || 0;
-                
-                // 计算激活价值 = 佣金 * (激活充值率 / 100)
-                const activationValue = commission * (rate / 100);
-                // 计算预估收入 = 激活数 * 激活价值
-                const estimatedIncome = activations * activationValue;
-                
-                // 更新显示
-                row.querySelector('.activation-value').textContent = activationValue.toFixed(2);
-                row.querySelector('.estimated-income').textContent = estimatedIncome.toFixed(2);
-                
-                // 更新总计
-                calculateUpstreamTotals();
-            }
-            
-            // 计算总计
-            function calculateUpstreamTotals() {
-                const rows = tableBody.querySelectorAll('tr:not(.empty-row)');
-                let totalOrders = 0;
-                let totalActivations = 0;
-                let totalIncome = 0;
-                
-                rows.forEach(row => {
-                    const orders = parseFloat(row.querySelector('.orders').value) || 0;
-                    const activations = parseFloat(row.querySelector('.activations').value) || 0;
-                    const income = parseFloat(row.querySelector('.estimated-income').textContent) || 0;
-                    
-                    totalOrders += orders;
-                    totalActivations += activations;
-                    totalIncome += income;
-                });
-                
-                // 计算整体平均激活价值
-                const avgActivationValue = totalActivations > 0 ? totalIncome / totalActivations : 0;
-                
-                // 更新显示
-                document.getElementById('totalOrders4').textContent = totalOrders.toLocaleString();
-                document.getElementById('totalActivations4').textContent = totalActivations.toLocaleString();
-                document.getElementById('totalIncome4').textContent = totalIncome.toFixed(2);
-                document.getElementById('avgActivationValue4').textContent = avgActivationValue.toFixed(2);
-            }
-            
-            // 显示空行提示
-            function showEmptyRow() {
-                const emptyRow = document.createElement('tr');
-                emptyRow.className = 'empty-row';
-                emptyRow.innerHTML = '<td colspan="8">暂无数据，请点击"添加上游"按钮添加数据</td>';
-                tableBody.appendChild(emptyRow);
-            }
-            
-            // 重置数据
-            function resetData() {
-                tableBody.innerHTML = '';
+        });
+        
+        // 保存到本地存储
+        localStorage.setItem(storageKey, JSON.stringify(dataToSave));
+        console.log('数据已保存到本地存储:', dataToSave.length, '行数据');
+    }
+    
+    // 清除本地存储
+    function clearLocalStorage() {
+        localStorage.removeItem(storageKey);
+        console.log('本地存储数据已清除');
+    }
+    
+    // 添加上游行
+    function addRow(data = {}) {
+        // 移除空行提示
+        const emptyRow = tableBody.querySelector('.empty-row');
+        if (emptyRow) emptyRow.remove();
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><input type="text" class="upstream-name" value="${data.name || ''}" placeholder="输入上游名称"></td>
+            <td><input type="number" class="orders" value="${data.orders || ''}" placeholder="订单数" min="0"></td>
+            <td><input type="number" class="activations" value="${data.activations || ''}" placeholder="激活数" min="0"></td>
+            <td><input type="number" class="commission" value="${data.commission || ''}" placeholder="佣金" min="0" step="0.01"></td>
+            <td><input type="number" class="rate" value="${data.rate || ''}" placeholder="充值率" min="0" max="100" step="0.01"></td>
+            <td class="calc-cell activation-value">0.00</td>
+            <td class="calc-cell estimated-income">0.00</td>
+            <td><button class="delete-btn"><i class="fas fa-trash-alt"></i></button></td>
+        `;
+        
+        tableBody.appendChild(row);
+        
+        // 添加删除按钮事件
+        const deleteBtn = row.querySelector('.delete-btn');
+        deleteBtn.addEventListener('click', function() {
+            row.remove();
+            calculateUpstreamTotals();
+            // 如果删除了所有行，显示空行提示
+            if (tableBody.children.length === 0) {
                 showEmptyRow();
-                calculateUpstreamTotals();
             }
+            // 保存到本地存储
+            saveToLocalStorage();
+        });
+        
+        // 为输入框添加事件监听
+        const inputs = row.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                calculateRow.call(row);
+                // 输入时自动保存
+                saveToLocalStorage();
+            });
+            input.addEventListener('change', function() {
+                calculateRow.call(row);
+                // 值改变时自动保存
+                saveToLocalStorage();
+            });
+        });
+        
+        // 计算该行数据
+        calculateRow.call(row);
+        
+        return row;
+    }
+    
+    // 计算单行数据
+    function calculateRow() {
+        const row = this.closest ? this.closest('tr') : this;
+        const orders = parseFloat(row.querySelector('.orders').value) || 0;
+        const activations = parseFloat(row.querySelector('.activations').value) || 0;
+        const commission = parseFloat(row.querySelector('.commission').value) || 0;
+        const rate = parseFloat(row.querySelector('.rate').value) || 0;
+        
+        // 计算激活价值 = 佣金 * (激活充值率 / 100)
+        const activationValue = commission * (rate / 100);
+        // 计算预估收入 = 激活数 * 激活价值
+        const estimatedIncome = activations * activationValue;
+        
+        // 更新显示
+        row.querySelector('.activation-value').textContent = activationValue.toFixed(2);
+        row.querySelector('.estimated-income').textContent = estimatedIncome.toFixed(2);
+        
+        // 更新总计
+        calculateUpstreamTotals();
+    }
+    
+    // 计算总计
+    function calculateUpstreamTotals() {
+        const rows = tableBody.querySelectorAll('tr:not(.empty-row)');
+        let totalOrders = 0;
+        let totalActivations = 0;
+        let totalIncome = 0;
+        
+        rows.forEach(row => {
+            const orders = parseFloat(row.querySelector('.orders').value) || 0;
+            const activations = parseFloat(row.querySelector('.activations').value) || 0;
+            const income = parseFloat(row.querySelector('.estimated-income').textContent) || 0;
             
-            // 加载示例数据
-            function loadExampleData() {
-                resetData();
-                exampleData.forEach(data => addRow(data));
-            }
-            
-            // 事件监听
-            addRowBtn.addEventListener('click', () => addRow());
-            calculateBtn.addEventListener('click', calculateUpstreamTotals);
-            resetBtn.addEventListener('click', resetData);
-            loadExampleBtn.addEventListener('click', loadExampleData);
-            
-            // 初始加载示例数据
+            totalOrders += orders;
+            totalActivations += activations;
+            totalIncome += income;
+        });
+        
+        // 计算整体平均激活价值
+        const avgActivationValue = totalActivations > 0 ? totalIncome / totalActivations : 0;
+        
+        // 更新显示
+        document.getElementById('totalOrders4').textContent = totalOrders.toLocaleString();
+        document.getElementById('totalActivations4').textContent = totalActivations.toLocaleString();
+        document.getElementById('totalIncome4').textContent = totalIncome.toFixed(2);
+        document.getElementById('avgActivationValue4').textContent = avgActivationValue.toFixed(2);
+    }
+    
+    // 显示空行提示
+    function showEmptyRow() {
+        const emptyRow = document.createElement('tr');
+        emptyRow.className = 'empty-row';
+        emptyRow.innerHTML = '<td colspan="8">暂无数据，请点击"添加上游"按钮添加数据</td>';
+        tableBody.appendChild(emptyRow);
+    }
+    
+    // 重置数据
+    function resetData() {
+        tableBody.innerHTML = '';
+        showEmptyRow();
+        calculateUpstreamTotals();
+        // 清除本地存储
+        clearLocalStorage();
+    }
+    
+    // 加载示例数据
+    function loadExampleData() {
+        resetData();
+        exampleData.forEach(data => addRow(data));
+        // 保存示例数据到本地存储
+        saveToLocalStorage();
+    }
+    
+    // 加载本地存储的数据
+    function loadSavedData() {
+        const savedData = loadFromLocalStorage();
+        if (savedData && savedData.length > 0) {
+            console.log('从本地存储加载数据:', savedData.length, '行');
+            resetData();
+            savedData.forEach(data => addRow(data));
+        } else {
+            console.log('本地存储中没有数据，加载示例数据');
             loadExampleData();
         }
+    }
+    
+    // 事件监听
+    addRowBtn.addEventListener('click', () => {
+        addRow();
+        // 保存到本地存储
+        saveToLocalStorage();
+    });
+    
+    calculateBtn.addEventListener('click', calculateUpstreamTotals);
+    resetBtn.addEventListener('click', resetData);
+    loadExampleBtn.addEventListener('click', loadExampleData);
+    
+    // 初始加载数据 - 优先从本地存储加载
+    loadSavedData();
+}
         
         // ==================== 第五个计算器：激活利润与盈亏平衡计算器 ====================
         function initActivationProfitCalculator() {
@@ -2593,3 +2749,4 @@
 </body>
 
 </html>
+
