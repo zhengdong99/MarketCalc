@@ -873,57 +873,87 @@
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
+    font-size: 14px;
 }
 
 /* 调整表格列宽 */
 #calculator4 th:nth-child(1), #calculator4 td:nth-child(1) {
-    width: 25%; /* 上游名称 - 加宽 */
+    width: 24%;
 }
 
 #calculator4 th:nth-child(2), #calculator4 td:nth-child(2) {
-    width: 12%; /* 订单数 */
+    width: 11%;
 }
 
 #calculator4 th:nth-child(3), #calculator4 td:nth-child(3) {
-    width: 12%; /* 激活数 */
+    width: 11%;
 }
 
 #calculator4 th:nth-child(4), #calculator4 td:nth-child(4) {
-    width: 8%; /* 佣金 - 变窄 */
+    width: 8%;
     min-width: 80px;
 }
 
 #calculator4 th:nth-child(5), #calculator4 td:nth-child(5) {
-    width: 12%; /* 激活充值率 */
+    width: 11%;
 }
 
 #calculator4 th:nth-child(6), #calculator4 td:nth-child(6) {
-    width: 12%; /* 激活价值 */
+    width: 11%;
 }
 
 #calculator4 th:nth-child(7), #calculator4 td:nth-child(7) {
-    width: 15%; /* 预估收入 */
+    width: 14%;
 }
 
 #calculator4 th:nth-child(8), #calculator4 td:nth-child(8) {
-    width: 4%; /* 操作列 */
-    min-width: 50px;
+    width: 10%;
+    min-width: 80px;
 }
 
+/* 设置列对齐方式 */
+#calculator4 th:nth-child(1), #calculator4 td:nth-child(1),
+#calculator4 th:nth-child(2), #calculator4 td:nth-child(2),
+#calculator4 th:nth-child(3), #calculator4 td:nth-child(3),
+#calculator4 th:nth-child(4), #calculator4 td:nth-child(4),
+#calculator4 th:nth-child(5), #calculator4 td:nth-child(5) {
+    text-align: left; /* 左对齐列：名称、订单数、激活数、佣金、激活充值率 */
+}
+
+#calculator4 th:nth-child(6), #calculator4 td:nth-child(6),
+#calculator4 th:nth-child(7), #calculator4 td:nth-child(7),
+#calculator4 th:nth-child(8), #calculator4 td:nth-child(8) {
+    text-align: center; /* 居中列：激活价值、预估收入、操作 */
+}
+
+/* 为左对齐的列添加左内边距 */
+#calculator4 td:nth-child(1), #calculator4 td:nth-child(2),
+#calculator4 td:nth-child(3), #calculator4 td:nth-child(4),
+#calculator4 td:nth-child(5) {
+    padding-left: 12px;
+}
+
+#calculator4 th:nth-child(1), #calculator4 th:nth-child(2),
+#calculator4 th:nth-child(3), #calculator4 th:nth-child(4),
+#calculator4 th:nth-child(5) {
+    padding-left: 12px;
+}
+
+/* 表头基础样式 */
 #calculator4 th {
     background-color: #f1f5f9;
-    padding: 16px 8px;
-    text-align: left;
+    padding: 14px 6px;
     font-weight: 600;
     color: #374151;
     border-bottom: 2px solid #e5e7eb;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: visible;
+    text-overflow: clip;
+    font-size: 15px;
 }
 
 #calculator4 td {
-    padding: 14px 8px;
+    padding: 12px 6px;
     border-bottom: 1px solid #e5e7eb;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -935,7 +965,7 @@
 
 #calculator4 input[type="text"], #calculator4 input[type="number"] {
     width: 100%;
-    padding: 10px 8px;
+    padding: 8px 6px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 14px;
@@ -951,16 +981,16 @@
 
 /* 特别调整上游名称输入框 */
 #calculator4 td:nth-child(1) input[type="text"] {
-    padding: 10px 12px;
-    font-size: 15px;
+    padding: 8px 10px;
+    font-size: 14px;
 }
 
-/* 特别调整佣金输入框 - 更窄 */
+/* 特别调整佣金输入框 */
 #calculator4 td:nth-child(4) input[type="number"] {
-    padding: 10px 5px;
+    padding: 8px 4px;
     text-align: center;
     font-size: 14px;
-    max-width: 80px;
+    max-width: 70px;
     margin: 0 auto;
     display: block;
 }
@@ -970,13 +1000,12 @@
     font-weight: 600;
     color: #1f2937;
     background-color: #f8fafc;
-    text-align: center;
-    padding: 14px 5px;
+    padding: 12px 4px;
+    font-size: 14px;
 }
 
-/* 调整预估收入单元格 - 数字可能较大 */
+/* 调整预估收入单元格 */
 #calculator4 td:nth-child(7).calc-cell {
-    font-size: 15px;
     color: #10b981;
 }
 
@@ -1005,7 +1034,7 @@
     background-color: #fee2e2;
 }
 
-/* 整体统计部分 - 已修改为4个框在同一行 */
+/* 整体统计部分 */
 #calculator4 .summary {
     background-color: #f1f5f9;
     padding: 25px;
@@ -1024,20 +1053,19 @@
 
 #calculator4 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 固定4列，都在同一行 */
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
 
-/* 响应式设计：在小屏幕上自动换行 */
 @media (max-width: 1100px) {
     #calculator4 .stats-grid {
-        grid-template-columns: repeat(2, 1fr); /* 中等屏幕：每行2个 */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 600px) {
     #calculator4 .stats-grid {
-        grid-template-columns: 1fr; /* 小屏幕：每行1个 */
+        grid-template-columns: 1fr;
     }
 }
 
@@ -1076,8 +1104,7 @@
     color: #9ca3af;
     margin-top: 5px;
     line-height: 1.3;
-}
-        
+}       
         /* ==================== 第五个计算器：激活利润与盈亏平衡计算器 ==================== */
         #calculator5 .calculator {
             display: grid;
@@ -2769,5 +2796,6 @@ function initUpstreamCalculator() {
 </body>
 
 </html>
+
 
 
